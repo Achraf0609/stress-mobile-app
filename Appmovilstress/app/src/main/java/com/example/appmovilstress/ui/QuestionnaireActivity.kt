@@ -11,6 +11,7 @@ import android.widget.RadioGroup
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
 import com.example.appmovilstress.R
 import com.example.appmovilstress.database.SQLiteHelper
 import com.example.appmovilstress.model.Pregunta
@@ -18,6 +19,9 @@ import com.example.appmovilstress.service.AIRecommendationService
 import com.example.appmovilstress.service.Pss14Repository
 import com.example.appmovilstress.service.SessionManager
 import com.google.android.material.appbar.MaterialToolbar
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -25,6 +29,7 @@ import java.util.Locale
 class QuestionnaireActivity : BaseActivity() {
 
     private val questionGroups = mutableListOf<Pair<Pregunta, RadioGroup>>()
+    private lateinit var finishButton: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,7 +41,8 @@ class QuestionnaireActivity : BaseActivity() {
         val questions = Pss14Repository.getQuestions()
         createQuestionViews(container, questions)
 
-        findViewById<Button>(R.id.buttonFinishQuestionnaire).setOnClickListener {
+        finishButton = findViewById(R.id.buttonFinishQuestionnaire)
+        finishButton.setOnClickListener {
             saveQuestionnaire()
         }
     }
@@ -84,7 +90,7 @@ class QuestionnaireActivity : BaseActivity() {
         val sessionManager = SessionManager(this)
         val userId = sessionManager.getUserId()
         if (userId == -1L) {
-            Toast.makeText(this, "La sesión no es válida.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "La sesion no es valida.", Toast.LENGTH_SHORT).show()
             finish()
             return
         }
@@ -104,27 +110,52 @@ class QuestionnaireActivity : BaseActivity() {
 
         val nivel = classifyStress(total)
         val fecha = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault()).format(Date())
-        val recommendation = AIRecommendationService().generarRecomendacion(nivel)
+        setLoadingState(true)
 
-        val database = SQLiteHelper(this)
-        val resultId = database.saveResultWithRecommendation(userId, total, nivel, fecha, recommendation)
+        lifecycleScope.launch {
+            val recommendationResult = withContext(Dispatchers.IO) {
+                AIRecommendationService(getString(R.string.gemini_api_key))
+                    .generarRecomendacion(total, nivel)
+            }
+            recommendationResult.aviso?.let {
+                Toast.makeText(this@QuestionnaireActivity, it, Toast.LENGTH_LONG).show()
+            }
 
-        val intent = Intent(this, ResultActivity::class.java).apply {
-            putExtra(ResultActivity.EXTRA_RESULT_ID, resultId)
-            putExtra(ResultActivity.EXTRA_SCORE, total)
-            putExtra(ResultActivity.EXTRA_LEVEL, nivel)
-            putExtra(ResultActivity.EXTRA_RECOMMENDATION, recommendation)
-            putExtra(ResultActivity.EXTRA_DATE, fecha)
+            val database = SQLiteHelper(this@QuestionnaireActivity)
+            val resultId = database.saveResultWithRecommendation(
+                userId,
+                total,
+                nivel,
+                fecha,
+                recommendationResult.texto
+            )
+
+            val intent = Intent(this@QuestionnaireActivity, ResultActivity::class.java).apply {
+                putExtra(ResultActivity.EXTRA_RESULT_ID, resultId)
+                putExtra(ResultActivity.EXTRA_SCORE, total)
+                putExtra(ResultActivity.EXTRA_LEVEL, nivel)
+                putExtra(ResultActivity.EXTRA_RECOMMENDATION, recommendationResult.texto)
+                putExtra(ResultActivity.EXTRA_DATE, fecha)
+            }
+            startActivity(intent)
+            finish()
         }
-        startActivity(intent)
-        finish()
     }
 
     private fun classifyStress(score: Int): String {
         return when (score) {
-            in 0..18 -> "Estrés bajo"
-            in 19..37 -> "Estrés moderado"
-            else -> "Estrés alto"
+            in 0..18 -> "Estr\u00e9s bajo"
+            in 19..37 -> "Estr\u00e9s moderado"
+            else -> "Estr\u00e9s alto"
+        }
+    }
+
+    private fun setLoadingState(isLoading: Boolean) {
+        finishButton.isEnabled = !isLoading
+        finishButton.text = if (isLoading) {
+            "Generando recomendacion..."
+        } else {
+            getString(R.string.finish_test)
         }
     }
 }
