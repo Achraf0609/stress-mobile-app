@@ -10,11 +10,11 @@
         android:id="@+id/welcomeCard"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:background="@drawable/bg_hero_gradient"
-        android:elevation="3dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/bg_dark_hero"
+        android:elevation="4dp"
         android:orientation="vertical"
-        android:padding="@dimen/spacing_large"
+        android:padding="@dimen/spacing_xlarge"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -22,7 +22,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/bg_pill"
+            android:background="@drawable/bg_outline_pill"
             android:paddingStart="14dp"
             android:paddingTop="6dp"
             android:paddingEnd="14dp"
@@ -37,8 +37,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_medium"
             android:text="@string/app_name"
-            android:textColor="@color/primary_dark"
-            android:textSize="30sp"
+            android:textColor="@color/white"
+            android:textSize="32sp"
             android:textStyle="bold" />
 
         <TextView
@@ -46,16 +46,17 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_small"
             android:text="@string/welcome_cta_title"
-            android:textColor="@color/text_primary"
-            android:textSize="19sp"
+            android:textColor="@color/hero_highlight"
+            android:textSize="20sp"
             android:textStyle="bold" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="12dp"
+            android:lineSpacingExtra="2dp"
             android:text="@string/welcome_cta_text"
-            android:textColor="@color/text_secondary"
+            android:textColor="@color/white"
             android:textSize="15sp" />
     </LinearLayout>
 
@@ -72,40 +73,66 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/welcomeCard" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/buttonLogin"
-        style="@style/Widget.MaterialComponents.Button"
+    <LinearLayout
+        android:id="@+id/actionPanel"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
-        android:text="@string/login"
-        app:backgroundTint="@color/primary"
-        app:cornerRadius="16dp"
+        android:layout_marginTop="@dimen/spacing_large"
+        android:background="@drawable/bg_card"
+        android:elevation="2dp"
+        android:orientation="vertical"
+        android:padding="@dimen/spacing_large"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textViewWelcomeSupport" />
+        app:layout_constraintTop_toBottomOf="@id/textViewWelcomeSupport">
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/buttonRegister"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/spacing_medium"
-        android:text="@string/register"
-        app:cornerRadius="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/buttonLogin"
-        app:strokeColor="@color/primary"
-        app:strokeWidth="1dp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Comenzar"
+            android:textColor="@color/primary_dark"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="Entra o crea una cuenta local para probar la demo."
+            android:textColor="@color/text_secondary"
+            android:textSize="14sp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonLogin"
+            style="@style/Widget.MaterialComponents.Button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_large"
+            android:text="@string/login"
+            app:backgroundTint="@color/primary"
+            app:cornerRadius="18dp"
+            app:iconTint="@color/white"
+            app:rippleColor="@color/accent" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonRegister"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_medium"
+            android:text="@string/register"
+            app:cornerRadius="18dp"
+            app:strokeColor="@color/primary"
+            app:strokeWidth="1dp" />
+    </LinearLayout>
 
     <TextView
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="18dp"
-        android:text="Pensada para presentar el TFG con una navegacion clara y resultados faciles de interpretar."
+        android:text="Pensada para presentar el TFG con una navegación clara y resultados fáciles de interpretar."
         android:textAlignment="center"
-        android:textColor="@color/text_secondary"
+        android:textColor="@color/text_muted"
         android:textSize="13sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

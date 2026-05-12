@@ -26,4 +26,13 @@
     <string name="history_title">Historial detallado</string>
     <string name="tests_count_label">Tests registrados</string>
     <string name="latest_result_label">&#218;ltimo resultado</string>
+    <string name="login_subtitle">Accede para consultar tus resultados y continuar el seguimiento.</string>
+    <string name="register_subtitle">Crea tu perfil local para guardar cuestionarios y recomendaciones.</string>
+    <string name="form_section_title">Datos de acceso</string>
+    <string name="result_summary_title">Tu estado actual</string>
+    <string name="result_recommendation_title">Recomendaci&#243;n personalizada</string>
+    <string name="questionnaire_intro_title">Completa el cuestionario</string>
+    <string name="questionnaire_intro_text">Responde las 14 preguntas seg&#250;n c&#243;mo te has sentido durante el &#250;ltimo mes. La puntuaci&#243;n se calcula autom&#225;ticamente al finalizar.</string>
+    <string name="recommendations_intro_title">Consejos guardados</string>
+    <string name="recommendations_intro_text">Aqu&#237; puedes revisar las recomendaciones generadas para tus resultados anteriores.</string>
 </resources>

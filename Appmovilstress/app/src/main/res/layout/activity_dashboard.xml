@@ -26,25 +26,26 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg_hero_gradient"
-                android:elevation="2dp"
+                android:background="@drawable/bg_dark_hero"
+                android:elevation="3dp"
                 android:orientation="vertical"
-                android:padding="@dimen/spacing_large">
+                android:padding="@dimen/spacing_xlarge">
 
                 <TextView
                     android:id="@+id/textViewWelcome"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/text_primary"
-                    android:textSize="24sp"
+                    android:textColor="@color/white"
+                    android:textSize="25sp"
                     android:textStyle="bold" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/spacing_small"
+                    android:lineSpacingExtra="2dp"
                     android:text="@string/dashboard_subtitle"
-                    android:textColor="@color/text_secondary"
+                    android:textColor="@color/hero_highlight"
                     android:textSize="15sp" />
             </LinearLayout>
 
@@ -54,56 +55,64 @@
                 android:layout_marginTop="@dimen/spacing_large"
                 android:text="Acciones principales"
                 android:textColor="@color/primary_dark"
-                android:textSize="18sp"
+                android:textSize="19sp"
                 android:textStyle="bold" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/buttonStartQuestionnaire"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/spacing_medium"
-                android:text="@string/start_pss"
-                app:backgroundTint="@color/primary"
-                app:cornerRadius="16dp" />
+                android:background="@drawable/bg_card"
+                android:orientation="vertical"
+                android:padding="@dimen/spacing_large">
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/buttonLastResult"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_medium"
-                android:text="@string/view_last_result"
-                app:cornerRadius="16dp"
-                app:strokeColor="@color/primary" />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/buttonStartQuestionnaire"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/start_pss"
+                    app:backgroundTint="@color/primary"
+                    app:cornerRadius="18dp" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/buttonEvolution"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_medium"
-                android:text="@string/view_evolution"
-                app:cornerRadius="16dp"
-                app:strokeColor="@color/primary" />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/buttonLastResult"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_medium"
+                    android:text="@string/view_last_result"
+                    app:cornerRadius="18dp"
+                    app:strokeColor="@color/primary" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/buttonRecommendations"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_medium"
-                android:text="@string/view_recommendations"
-                app:cornerRadius="16dp"
-                app:strokeColor="@color/primary" />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/buttonEvolution"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_medium"
+                    android:text="@string/view_evolution"
+                    app:cornerRadius="18dp"
+                    app:strokeColor="@color/primary" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/buttonRecommendations"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_medium"
+                    android:text="@string/view_recommendations"
+                    app:cornerRadius="18dp"
+                    app:strokeColor="@color/primary" />
+            </LinearLayout>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/buttonLogout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="28dp"
+                android:layout_marginTop="@dimen/spacing_large"
                 android:text="@string/logout"
                 app:backgroundTint="@color/primary_dark"
-                app:cornerRadius="16dp" />
+                app:cornerRadius="18dp" />
         </LinearLayout>
     </ScrollView>
 

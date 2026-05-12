@@ -24,10 +24,35 @@
             android:orientation="vertical"
             android:padding="@dimen/spacing_large">
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_hero_gradient"
+                android:orientation="vertical"
+                android:padding="@dimen/spacing_large">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/recommendations_intro_title"
+                    android:textColor="@color/primary_dark"
+                    android:textSize="22sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_small"
+                    android:text="@string/recommendations_intro_text"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
             <TextView
                 android:id="@+id/textViewEmptyState"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_large"
                 android:background="@drawable/bg_card"
                 android:gravity="center"
                 android:padding="@dimen/spacing_large"
@@ -39,6 +64,7 @@
                 android:id="@+id/recommendationsContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_large"
                 android:orientation="vertical" />
         </LinearLayout>
     </ScrollView>

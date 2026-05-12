@@ -1,18 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="primary">#5E8B7E</color>
-    <color name="primary_dark">#44685E</color>
-    <color name="accent">#A7C4BC</color>
-    <color name="background">#F5FAF8</color>
+    <color name="primary">#4E7B70</color>
+    <color name="primary_dark">#365C54</color>
+    <color name="primary_light">#8FB8A8</color>
+    <color name="accent">#A9D5C7</color>
+    <color name="background">#F3F8F6</color>
+    <color name="background_top">#F7FBFA</color>
+    <color name="background_bottom">#EAF4F0</color>
     <color name="surface">#FFFFFFFF</color>
-    <color name="surface_soft">#EEF6F2</color>
-    <color name="text_primary">#1F2D2A</color>
-    <color name="text_secondary">#5E6D68</color>
+    <color name="surface_soft">#EEF7F3</color>
+    <color name="surface_tint">#F6FCF9</color>
+    <color name="text_primary">#18312B</color>
+    <color name="text_secondary">#60736C</color>
+    <color name="text_muted">#7E918B</color>
     <color name="stress_low">#4CAF50</color>
-    <color name="stress_moderate">#FB8C00</color>
-    <color name="stress_high">#E53935</color>
-    <color name="divider">#D8E5E0</color>
-    <color name="hero_start">#E8F4EF</color>
-    <color name="hero_end">#D0E7DD</color>
+    <color name="stress_moderate">#F59E0B</color>
+    <color name="stress_high">#E1574C</color>
+    <color name="divider">#D7E6E0</color>
+    <color name="hero_start">#EDF8F3</color>
+    <color name="hero_end">#DCEFE7</color>
+    <color name="hero_highlight">#F8FFFC</color>
+    <color name="card_shadow">#140F241E</color>
     <color name="white">#FFFFFFFF</color>
 </resources>
