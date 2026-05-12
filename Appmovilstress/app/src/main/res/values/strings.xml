@@ -1,3 +1,29 @@
 <resources>
-    <string name="app_name">App movil stress</string>
+    <string name="app_name">Monitor de Estr&#233;s</string>
+    <string name="welcome_subtitle">Demo acad&#233;mica para la monitorizaci&#243;n del estr&#233;s y recomendaciones personalizadas</string>
+    <string name="welcome_badge">Bienestar digital</string>
+    <string name="welcome_cta_title">Eval&#250;a tu estr&#233;s y sigue su evoluci&#243;n</string>
+    <string name="welcome_cta_text">Registro local, cuestionario PSS-14, resultados autom&#225;ticos y recomendaciones personalizadas en una sola demo.</string>
+    <string name="login">Iniciar sesi&#243;n</string>
+    <string name="register">Registrarse</string>
+    <string name="name">Nombre</string>
+    <string name="email">Email</string>
+    <string name="password">Contrase&#241;a</string>
+    <string name="logout">Cerrar sesi&#243;n</string>
+    <string name="finish_test">Finalizar cuestionario</string>
+    <string name="view_last_result">Ver &#250;ltimo resultado</string>
+    <string name="view_evolution">Ver evoluci&#243;n del estr&#233;s</string>
+    <string name="view_recommendations">Ver recomendaciones</string>
+    <string name="start_pss">Realizar cuestionario PSS-14</string>
+    <string name="questionnaire_title">Cuestionario PSS-14</string>
+    <string name="result_title">Resultado del cuestionario</string>
+    <string name="evolution_title">Evoluci&#243;n del estr&#233;s</string>
+    <string name="recommendations_title">Recomendaciones guardadas</string>
+    <string name="no_data">Todav&#237;a no hay datos registrados.</string>
+    <string name="dashboard_subtitle">Consulta tu estado actual, completa nuevos tests y revisa c&#243;mo cambia tu estr&#233;s a lo largo del tiempo.</string>
+    <string name="evolution_summary">Seguimiento temporal de los resultados registrados</string>
+    <string name="chart_title">Gr&#225;fica de evoluci&#243;n</string>
+    <string name="history_title">Historial detallado</string>
+    <string name="tests_count_label">Tests registrados</string>
+    <string name="latest_result_label">&#218;ltimo resultado</string>
 </resources>
