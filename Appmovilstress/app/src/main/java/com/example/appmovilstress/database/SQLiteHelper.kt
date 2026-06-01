@@ -243,6 +243,31 @@ class SQLiteHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, 
         return list
     }
 
+    // Recupera solo los textos de las ultimas recomendaciones del usuario para evitar repeticiones.
+    fun getRecentRecommendationTexts(userId: Long, limit: Int = 3): List<String> {
+        val db = readableDatabase
+        val recommendations = mutableListOf<String>()
+        val cursor = db.rawQuery(
+            """
+            SELECT rec.texto
+            FROM $TABLE_RECOMMENDATIONS rec
+            INNER JOIN $TABLE_RESULTS r ON r.id_resultado = rec.id_resultado
+            WHERE r.id_usuario = ?
+            ORDER BY rec.id_recomendacion DESC
+            LIMIT ?
+            """.trimIndent(),
+            arrayOf(userId.toString(), limit.toString())
+        )
+
+        cursor.use {
+            while (it.moveToNext()) {
+                recommendations.add(it.getString(0))
+            }
+        }
+
+        return recommendations
+    }
+
     companion object {
         // Constantes de configuracion del esquema SQLite.
         private const val DATABASE_NAME = "stress_monitor.db"

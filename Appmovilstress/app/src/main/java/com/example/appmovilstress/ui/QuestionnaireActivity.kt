@@ -138,11 +138,14 @@ class QuestionnaireActivity : BaseActivity() {
         // Desactiva el boton para evitar que el usuario envie varias veces el cuestionario.
         setLoadingState(true)
 
+        val database = SQLiteHelper(this)
+        val recomendacionesPrevias = database.getRecentRecommendationTexts(userId)
+
         // Ejecuta la llamada a Gemini y el guardado de datos fuera del hilo principal.
         lifecycleScope.launch {
             val recommendationResult = withContext(Dispatchers.IO) {
                 AIRecommendationService(getString(R.string.gemini_api_key))
-                    .generarRecomendacion(total, nivel)
+                    .generarRecomendacion(total, nivel, recomendacionesPrevias)
             }
 
             // Si Gemini devuelve alguna advertencia, se informa al usuario.
@@ -151,7 +154,6 @@ class QuestionnaireActivity : BaseActivity() {
             }
 
             // Guarda el resultado del cuestionario y la recomendacion generada en la base de datos local.
-            val database = SQLiteHelper(this@QuestionnaireActivity)
             val resultId = database.saveResultWithRecommendation(
                 userId,
                 total,

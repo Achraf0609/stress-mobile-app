@@ -79,7 +79,7 @@ class EvolutionActivity : BaseActivity() {
         val entries = results.mapIndexed { index, result ->
             Entry(index.toFloat(), result.puntuacion.toFloat())
         }
-        val labels = results.map { shortenDate(it.fecha) }
+        val labels = buildAxisLabels(results)
 
         // Define el estilo visual de la linea que representa la puntuacion en el tiempo.
         val dataSet = LineDataSet(entries, "Puntuacion PSS-14").apply {
@@ -92,6 +92,7 @@ class EvolutionActivity : BaseActivity() {
             valueTextSize = 11f
             mode = LineDataSet.Mode.CUBIC_BEZIER
             setDrawFilled(true)
+            setDrawValues(entries.size <= MAX_VISIBLE_POINT_VALUES)
             fillColor = getColor(R.color.accent)
             highLightColor = getColor(R.color.stress_moderate)
         }
@@ -112,6 +113,9 @@ class EvolutionActivity : BaseActivity() {
                 granularity = 1f
                 setDrawGridLines(false)
                 textColor = getColor(R.color.text_secondary)
+                textSize = 10f
+                setLabelCount(minOf(labels.size, MAX_X_AXIS_LABELS), false)
+                setAvoidFirstLastClipping(true)
                 valueFormatter = object : ValueFormatter() {
                     override fun getAxisLabel(value: Float, axis: AxisBase?): String {
                         val index = value.toInt()
@@ -134,8 +138,22 @@ class EvolutionActivity : BaseActivity() {
         }
     }
 
-    // Recorta la fecha para mostrar solo la parte principal en el eje X.
-    private fun shortenDate(fullDate: String): String {
-        return fullDate.substringBefore(" ")
+    // Usa horas en historiales de un solo dia y fechas breves cuando la evolucion abarca varios dias.
+    private fun buildAxisLabels(results: List<ResultadoConRecomendacion>): List<String> {
+        val dates = results.map { it.fecha.substringBefore(" ") }
+        val showTime = dates.distinct().size == 1
+
+        return results.mapIndexed { index, result ->
+            if (showTime) {
+                result.fecha.substringAfter(" ", missingDelimiterValue = result.fecha)
+            } else {
+                dates[index].substringBeforeLast("/")
+            }
+        }
+    }
+
+    companion object {
+        private const val MAX_X_AXIS_LABELS = 5
+        private const val MAX_VISIBLE_POINT_VALUES = 10
     }
 }
