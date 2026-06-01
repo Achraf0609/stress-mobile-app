@@ -19,14 +19,20 @@ import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.ValueFormatter
 import com.google.android.material.appbar.MaterialToolbar
 
+/*
+ * Archivo encargado de mostrar la evolucion temporal del estres del usuario.
+ * Combina una grafica de linea con un historial detallado de resultados.
+ */
 class EvolutionActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_evolution)
 
+        // Configura el toolbar de la pantalla de evolucion.
         setupToolbar(findViewById<MaterialToolbar>(R.id.toolbar), getString(R.string.evolution_title))
 
+        // Enlaza los componentes visuales necesarios para la grafica y el historial.
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerViewEvolution)
         val emptyState = findViewById<TextView>(R.id.textViewEmptyState)
         val chartText = findViewById<TextView>(R.id.textViewChartSummary)
@@ -34,8 +40,10 @@ class EvolutionActivity : BaseActivity() {
         val latestResult = findViewById<TextView>(R.id.textViewLatestResult)
         val lineChart = findViewById<LineChart>(R.id.lineChartStress)
 
+        // Recuperacion del historial de resultados del usuario autenticado desde la base de datos local.
         val results = SQLiteHelper(this).getResults(SessionManager(this).getUserId())
 
+        // Si no hay resultados, se muestra un estado vacio y se ocultan grafica e historial.
         if (results.isEmpty()) {
             emptyState.visibility = View.VISIBLE
             recyclerView.visibility = View.GONE
@@ -46,14 +54,18 @@ class EvolutionActivity : BaseActivity() {
             return
         }
 
+        // Si hay resultados, se inicializan la grafica y la lista de historial.
         emptyState.visibility = View.GONE
         recyclerView.visibility = View.VISIBLE
         lineChart.visibility = View.VISIBLE
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.isNestedScrollingEnabled = false
         recyclerView.adapter = EvolutionAdapter(results)
+
+        // Preparacion de la informacion del historial para mostrarla en la pantalla de evolucion.
         configureChart(lineChart, results)
 
+        // Muestra un resumen rapido con el numero de tests y el ultimo resultado registrado.
         val last = results.last()
         testsCount.text = results.size.toString()
         latestResult.text = last.puntuacion.toString()
@@ -61,12 +73,15 @@ class EvolutionActivity : BaseActivity() {
             "Historial registrado: ${results.size} tests. Ultimo valor: ${last.puntuacion} puntos (${last.nivelEstres})."
     }
 
+    // Configura la grafica de linea y le asigna los datos del historial.
     private fun configureChart(lineChart: LineChart, results: List<ResultadoConRecomendacion>) {
+        // Transformacion del historial de resultados en puntos y etiquetas que puede representar la grafica.
         val entries = results.mapIndexed { index, result ->
             Entry(index.toFloat(), result.puntuacion.toFloat())
         }
         val labels = results.map { shortenDate(it.fecha) }
 
+        // Define el estilo visual de la linea que representa la puntuacion en el tiempo.
         val dataSet = LineDataSet(entries, "Puntuacion PSS-14").apply {
             color = getColor(R.color.primary)
             valueTextColor = getColor(R.color.primary_dark)
@@ -81,6 +96,7 @@ class EvolutionActivity : BaseActivity() {
             highLightColor = getColor(R.color.stress_moderate)
         }
 
+        // Personaliza ejes, leyenda y comportamiento general de la grafica.
         lineChart.apply {
             description.isEnabled = false
             legend.isEnabled = true
@@ -118,6 +134,7 @@ class EvolutionActivity : BaseActivity() {
         }
     }
 
+    // Recorta la fecha para mostrar solo la parte principal en el eje X.
     private fun shortenDate(fullDate: String): String {
         return fullDate.substringBefore(" ")
     }

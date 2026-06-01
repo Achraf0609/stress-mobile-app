@@ -9,14 +9,20 @@ import com.example.appmovilstress.database.SQLiteHelper
 import com.example.appmovilstress.model.Usuario
 import com.google.android.material.appbar.MaterialToolbar
 
+/*
+ * Archivo que gestiona el registro de nuevos usuarios.
+ * Valida el formulario y guarda los datos del usuario en SQLite.
+ */
 class RegisterActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
 
+        // Configura el toolbar de la pantalla de registro.
         setupToolbar(findViewById<MaterialToolbar>(R.id.toolbar), getString(R.string.register))
 
+        // Inicializa la base de datos y enlaza los campos del formulario.
         val database = SQLiteHelper(this)
         val nameEditText = findViewById<EditText>(R.id.editTextName)
         val emailEditText = findViewById<EditText>(R.id.editTextEmail)
@@ -27,17 +33,22 @@ class RegisterActivity : BaseActivity() {
             val email = emailEditText.text.toString().trim()
             val password = passwordEditText.text.toString().trim()
 
+            // Validacion basica del formulario de registro antes de guardar el usuario.
             if (name.isEmpty() || email.isEmpty() || password.isEmpty()) {
                 Toast.makeText(this, "Completa todos los campos.", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
+            // Comprobacion de que el correo no exista previamente en la base de datos local.
             if (database.emailExists(email)) {
                 Toast.makeText(this, "Ya existe un usuario con ese email.", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
-            val insertedId = database.registerUser(Usuario(nombre = name, email = email, password = password))
+            // Insercion del nuevo usuario en SQLite y verificacion del resultado de la operacion.
+            val insertedId = database.registerUser(
+                Usuario(nombre = name, email = email, password = password)
+            )
             if (insertedId > 0) {
                 Toast.makeText(this, "Usuario registrado correctamente.", Toast.LENGTH_SHORT).show()
                 finish()

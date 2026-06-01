@@ -8,8 +8,13 @@ import com.example.appmovilstress.model.Recomendacion
 import com.example.appmovilstress.model.ResultadoConRecomendacion
 import com.example.appmovilstress.model.Usuario
 
+/*
+ * Archivo responsable de crear y gestionar la base de datos SQLite local.
+ * Centraliza todas las operaciones de usuarios, resultados y recomendaciones.
+ */
 class SQLiteHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
 
+    // Crea las tablas principales la primera vez que se instala la aplicacion.
     override fun onCreate(db: SQLiteDatabase) {
         db.execSQL(
             """
@@ -48,6 +53,7 @@ class SQLiteHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, 
         )
     }
 
+    // Recrea la base de datos si cambia la version del esquema.
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
         db.execSQL("DROP TABLE IF EXISTS $TABLE_RECOMMENDATIONS")
         db.execSQL("DROP TABLE IF EXISTS $TABLE_RESULTS")
@@ -55,8 +61,11 @@ class SQLiteHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, 
         onCreate(db)
     }
 
+    // Inserta un nuevo usuario en la tabla usuarios.
     fun registerUser(usuario: Usuario): Long {
         val db = writableDatabase
+
+        // Preparacion de los datos del usuario para insertarlos en la tabla usuarios de SQLite.
         val values = ContentValues().apply {
             put("nombre", usuario.nombre)
             put("email", usuario.email)
@@ -65,8 +74,11 @@ class SQLiteHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, 
         return db.insert(TABLE_USERS, null, values)
     }
 
+    // Comprueba si existe un usuario con el email y la contrasena indicados.
     fun login(email: String, password: String): Usuario? {
         val db = readableDatabase
+
+        // Consulta SQL parametrizada para validar las credenciales del usuario en la base de datos local.
         val cursor = db.rawQuery(
             "SELECT id_usuario, nombre, email, password FROM $TABLE_USERS WHERE email = ? AND password = ?",
             arrayOf(email, password)
@@ -86,6 +98,7 @@ class SQLiteHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, 
         }
     }
 
+    // Comprueba si un correo ya esta registrado para evitar duplicados.
     fun emailExists(email: String): Boolean {
         val db = readableDatabase
         val cursor = db.rawQuery(
@@ -97,6 +110,7 @@ class SQLiteHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, 
         }
     }
 
+    // Guarda en una transaccion tanto el resultado del test como la recomendacion asociada.
     fun saveResultWithRecommendation(
         userId: Long,
         puntuacion: Int,
@@ -108,6 +122,7 @@ class SQLiteHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, 
         db.beginTransaction()
 
         return try {
+            // Insercion del resultado del cuestionario en la tabla resultados.
             val resultValues = ContentValues().apply {
                 put("id_usuario", userId)
                 put("puntuacion", puntuacion)
@@ -116,6 +131,7 @@ class SQLiteHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, 
             }
             val resultId = db.insert(TABLE_RESULTS, null, resultValues)
 
+            // Insercion de la recomendacion asociada al resultado en la tabla recomendaciones.
             val recommendationValues = ContentValues().apply {
                 put("id_resultado", resultId)
                 put("texto", textoRecomendacion)
@@ -123,6 +139,7 @@ class SQLiteHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, 
             }
             db.insert(TABLE_RECOMMENDATIONS, null, recommendationValues)
 
+            // Confirmacion de la transaccion para guardar de forma atomica resultado y recomendacion.
             db.setTransactionSuccessful()
             resultId
         } finally {
@@ -130,6 +147,7 @@ class SQLiteHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, 
         }
     }
 
+    // Recupera el ultimo resultado almacenado del usuario junto a su recomendacion.
     fun getLastResult(userId: Long): ResultadoConRecomendacion? {
         val db = readableDatabase
         val cursor = db.rawQuery(
@@ -160,9 +178,12 @@ class SQLiteHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, 
         }
     }
 
+    // Devuelve el historial cronologico completo de resultados del usuario.
     fun getResults(userId: Long): List<ResultadoConRecomendacion> {
         val db = readableDatabase
         val resultList = mutableListOf<ResultadoConRecomendacion>()
+
+        // Consulta SQL que recupera el historial de resultados del usuario junto con la recomendacion asociada.
         val cursor = db.rawQuery(
             """
             SELECT r.id_resultado, r.id_usuario, r.puntuacion, r.nivel_estres, r.fecha, rec.texto
@@ -176,6 +197,7 @@ class SQLiteHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, 
 
         cursor.use {
             while (it.moveToNext()) {
+                // Construccion de la lista de resultados que posteriormente se mostrara en la pantalla de evolucion.
                 resultList.add(
                     ResultadoConRecomendacion(
                         resultadoId = it.getLong(0),
@@ -191,6 +213,7 @@ class SQLiteHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, 
         return resultList
     }
 
+    // Devuelve la lista de recomendaciones generadas para el usuario actual.
     fun getRecommendations(userId: Long): List<Recomendacion> {
         val db = readableDatabase
         val list = mutableListOf<Recomendacion>()
@@ -221,6 +244,7 @@ class SQLiteHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, 
     }
 
     companion object {
+        // Constantes de configuracion del esquema SQLite.
         private const val DATABASE_NAME = "stress_monitor.db"
         private const val DATABASE_VERSION = 1
         private const val TABLE_USERS = "usuarios"
